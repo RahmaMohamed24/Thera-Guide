@@ -1,0 +1,6 @@
+@TheraGuide_HostAddress = http://localhost:5218
+
+GET {{TheraGuide_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
