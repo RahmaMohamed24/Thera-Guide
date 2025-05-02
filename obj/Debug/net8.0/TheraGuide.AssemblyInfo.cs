@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TheraGuide")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d4f0bf6b4229ff0e2c4e1bdb5827792030091781")]
 [assembly: System.Reflection.AssemblyProductAttribute("TheraGuide")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TheraGuide")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

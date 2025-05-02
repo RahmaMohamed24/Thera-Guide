@@ -52,55 +52,58 @@ namespace TheraGuide.Controllers
             if (result.Succeeded)
             {
 
-                return Ok(new { Message = "User registered successfully" });
+                return Ok(new { Message = "User registered successfully",model });
             }
 
             return BadRequest(result.Errors);
         }
-
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginViewModel loginDto)
         {
-            if (ModelState.IsValid == true)
+            if (!ModelState.IsValid)
             {
-                ApplicationUser UserModel = await _userManager.FindByNameAsync(loginDto.Email);
-                if (UserModel != null)
-                {
-                    bool found = await _userManager.CheckPasswordAsync(UserModel, loginDto.Password);
-
-                    if (found)
-
-                    {
-                        // Your code to generate a JWT token
-                        var key = Encoding.UTF8.GetBytes(_configuration["JWT:Key"]);
-                        var tokenHandler = new JwtSecurityTokenHandler();
-                        var tokenDescriptor = new SecurityTokenDescriptor
-                        {
-                            Subject = new ClaimsIdentity(new Claim[]
-                            {
-        new Claim(ClaimTypes.NameIdentifier, UserModel.Id.ToString())
-                            }),
-                            Expires = DateTime.UtcNow.AddHours(1),
-                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                        };
-                        var token = tokenHandler.CreateToken(tokenDescriptor);
-                        var tokenString = tokenHandler.WriteToken(token);
-
-                        return Ok(new { Token = tokenString });
-                       
-
-                    }
-
-
-                }
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
+            var user = await _userManager.FindByNameAsync(loginDto.Email);
+            if (user == null)
+            {
+                return Unauthorized("Invalid credentials");
+            }
 
-            //401
-            return Unauthorized();
+            var passwordValid = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+            if (!passwordValid)
+            {
+                return Unauthorized("Invalid credentials");
+            }
+
+            // Generate JWT token
+            var key = Encoding.UTF8.GetBytes(_configuration["JWT:Key"]);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    // Add more claims if needed
+                }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+
+            // Return token, userId, and any other relevant user info
+            return Ok(new
+            {
+                Token = tokenString,
+                UserId = user.Id,
+                Email = user.Email,
+                // Add any other user properties you need
+            });
         }
-       
+
         [HttpPost("update-profile")]
         public async Task<IActionResult> UpdateProfile(ProfileUpdateViewModel model)
         {
@@ -109,8 +112,13 @@ namespace TheraGuide.Controllers
                 return BadRequest(ModelState);
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get logged-in user's ID
-            var user = await _userManager.FindByIdAsync(userId);
+            // Validate userId is provided
+            if (string.IsNullOrEmpty(model.UserId))
+            {
+                return BadRequest("User ID is required.");
+            }
+
+            var user = await _userManager.FindByIdAsync(model.UserId);
 
             if (user == null)
             {
@@ -121,7 +129,6 @@ namespace TheraGuide.Controllers
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             user.Email = model.Email;
-           
 
             var result = await _userManager.UpdateAsync(user);
 
@@ -131,6 +138,16 @@ namespace TheraGuide.Controllers
             }
 
             return BadRequest(result.Errors);
+        }
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+          
+            await _signInManager.SignOutAsync();
+
+            
+
+            return Ok(new { Message = "Logged out successfully" });
         }
 
     }
