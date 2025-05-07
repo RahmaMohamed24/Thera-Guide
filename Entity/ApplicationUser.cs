@@ -12,5 +12,8 @@ namespace TheraGuide.Entity
         [Required]
         [MaxLength(50)]
         public string LastName { get; set; }
+
+        public string VerificationCode { get; set; }
+        public bool IsEmailVerified { get; set; } = false;
     }
 }

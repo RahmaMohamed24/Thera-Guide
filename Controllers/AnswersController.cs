@@ -52,35 +52,35 @@ namespace TheraGuide.Controllers
             return CreatedAtAction(nameof(GetAnswer), new { id = created.Id }, created);
         }
 
-        // PUT: api/answers/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAnswer(long id, [FromBody] Answer answer)
-        {
-            if (id != answer.Id)
-                return BadRequest("ID mismatch");
+        //// PUT: api/answers/5
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateAnswer(long id, [FromBody] Answer answer)
+        //{
+        //    if (id != answer.Id)
+        //        return BadRequest("ID mismatch");
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
 
-            var existing = await _answerRepository.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound();
+        //    var existing = await _answerRepository.GetByIdAsync(id);
+        //    if (existing == null)
+        //        return NotFound();
 
-            await _answerRepository.UpdateAsync(answer);
-            return NoContent();
-        }
+        //    await _answerRepository.UpdateAsync(answer);
+        //    return NoContent();
+        //}
 
-        // DELETE: api/answers/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAnswer(long id)
-        {
-            var existing = await _answerRepository.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound();
+        //// DELETE: api/answers/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteAnswer(long id)
+        //{
+        //    var existing = await _answerRepository.GetByIdAsync(id);
+        //    if (existing == null)
+        //        return NotFound();
 
-            await _answerRepository.DeleteAsync(id);
-            return NoContent();
-        }
+        //    await _answerRepository.DeleteAsync(id);
+        //    return NoContent();
+        //}
     }
 
 }

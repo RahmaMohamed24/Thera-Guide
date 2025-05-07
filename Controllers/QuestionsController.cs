@@ -73,33 +73,33 @@ namespace TheraGuide.Controllers
         }
 
         // PUT: api/questions/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateQuestion(long id, [FromBody] Question question)
-        {
-            if (id != question.Id)
-                return BadRequest("ID mismatch");
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateQuestion(long id, [FromBody] Question question)
+        //{
+        //    if (id != question.Id)
+        //        return BadRequest("ID mismatch");
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
 
-            var existing = await _questionRepository.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound();
+        //    var existing = await _questionRepository.GetByIdAsync(id);
+        //    if (existing == null)
+        //        return NotFound();
 
-            await _questionRepository.UpdateAsync(question);
-            return NoContent();
-        }
+        //    await _questionRepository.UpdateAsync(question);
+        //    return NoContent();
+        //}
 
-        // DELETE: api/questions/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteQuestion(long id)
-        {
-            var existing = await _questionRepository.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound();
+        //// DELETE: api/questions/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteQuestion(long id)
+        //{
+        //    var existing = await _questionRepository.GetByIdAsync(id);
+        //    if (existing == null)
+        //        return NotFound();
 
-            await _questionRepository.DeleteAsync(id);
-            return NoContent();
-        }
+        //    await _questionRepository.DeleteAsync(id);
+        //    return NoContent();
+        //}
     }
 }

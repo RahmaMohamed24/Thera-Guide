@@ -32,10 +32,10 @@ namespace TheraGuide.Controllers
 
             return Ok(new { message = "Answer saved successfully." });
         }
-        [HttpPost]
-        public async Task<IActionResult> SaveUserAnswer([FromBody] SaveUserAnswersViewModel dto)
+        [HttpPost("SaveUserAnswers")]
+        public async Task<IActionResult> SaveUserAnswers([FromBody] SaveUserAnswersViewModel dto)
         {
-
+            
             var userAnswers = new List<UserAnswers>();
             foreach (long AnswerId in dto.AnswerIds)
             {

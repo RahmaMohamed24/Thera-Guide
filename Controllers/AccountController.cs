@@ -42,67 +42,76 @@ namespace TheraGuide.Controllers
             _emailSender = emailSender;
         }
 
-       
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-   
-            }
 
             var user = _mapper.Map<ApplicationUser>(model);
+
+            // Generate and set verification code
+            var verificationCode = new Random().Next(100000, 999999).ToString();
+            user.VerificationCode = verificationCode;
+            user.IsEmailVerified = false;
+
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-                // Send welcome email
                 try
                 {
-                    var subject = "Welcome To TheraGuide";
-                   
-                    var message = $"Hello {user.UserName},\n\nThank you for registering with us!";
+                    var subject = "Email Verification - TheraGuide";
+                    var message = $"Hi {user.UserName},\n\nYour Email Verification Code Is: {verificationCode}";
 
                     await _emailSender.SendEmailAsync(user.Email, subject, message);
                 }
                 catch (Exception ex)
                 {
-                    // Log the email sending error (you might want to add logging here)
-                    // But don't fail the registration just because email failed
-                    Console.WriteLine($"Failed to send email: {ex.Message}");
+                    Console.WriteLine($"Failed to send verification email: {ex.Message}");
                 }
 
-                return Ok(new { Message = "User registered successfully", model });
+                return Ok(new { Message = "User registered successfully. Please verify your email.", model });
             }
 
             return BadRequest(result.Errors);
+        }
+        [HttpPost("verify-email")]
+        public async Task<IActionResult> VerifyEmail([FromBody] EmailVerificationViewModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return NotFound("User not found.");
+
+            if (user.VerificationCode != model.VerificationCode)
+                return BadRequest("Invalid verification code.");
+
+            user.IsEmailVerified = true;
+            user.VerificationCode = "";
+
+            await _userManager.UpdateAsync(user);
+
+            return Ok(new { Message = "Email verified successfully." });
         }
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginViewModel loginDto)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             var user = await _userManager.FindByNameAsync(loginDto.Email);
             if (user == null)
-            {
                 return Unauthorized("Invalid credentials");
-            }
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!passwordValid)
-            {
                 return Unauthorized("Invalid credentials");
-            }
 
-            //await _signInManager.SignInAsync(user,true);
+            //  Check if email is verified
+            if (!user.IsEmailVerified)
+                return Unauthorized("Please verify your email before logging in.");
 
-
-
-            // Generate JWT token
+            //  Generate JWT token
             var key = Encoding.UTF8.GetBytes(_configuration["JWT:Key"]);
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -110,7 +119,7 @@ namespace TheraGuide.Controllers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    // Add more claims if needed
+            new Claim(ClaimTypes.Email, user.Email)
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -119,15 +128,14 @@ namespace TheraGuide.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
 
-            // Return token, userId, and any other relevant user info
             return Ok(new
             {
                 Token = tokenString,
                 UserId = user.Id,
-                Email = user.Email,
-                // Add any other user properties you need
+                Email = user.Email
             });
         }
+
 
         [HttpPost("update-profile")]
         public async Task<IActionResult> UpdateProfile(ProfileUpdateViewModel model)
