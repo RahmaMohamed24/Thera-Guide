@@ -4356,11 +4356,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\LAPTOP WORLD\\source\\repos\\TheraGuide\\TheraGuide\\TheraGuide.csproj",
+      "projectUniqueName": "D:\\TheraGuide\\TheraGuide.csproj",
       "projectName": "TheraGuide",
-      "projectPath": "C:\\Users\\LAPTOP WORLD\\source\\repos\\TheraGuide\\TheraGuide\\TheraGuide.csproj",
+      "projectPath": "D:\\TheraGuide\\TheraGuide.csproj",
       "packagesPath": "C:\\Users\\LAPTOP WORLD\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\LAPTOP WORLD\\source\\repos\\TheraGuide\\TheraGuide\\obj\\",
+      "outputPath": "D:\\TheraGuide\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

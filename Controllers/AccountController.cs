@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using TheraGuide.EmailSender;
 using TheraGuide.Entity;
 using TheraGuide.Repository;
 using TheraGuide.ViewModels;
@@ -22,37 +24,56 @@ namespace TheraGuide.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
-
+        private readonly IEmailSender _emailSender;
         public AccountController(
             IGenericRepository<ApplicationUser> userRepository,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IConfiguration configuration,
-            IMapper mapper)
+            IMapper mapper,
+            IEmailSender emailSender
+            )
         {
             _userRepository = userRepository;
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
             _mapper = mapper;
+            _emailSender = emailSender;
         }
 
+       
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+   
             }
 
-            var User = _mapper.Map<ApplicationUser>(model);
-
-            var result = await _userManager.CreateAsync(User, model.Password);
+            var user = _mapper.Map<ApplicationUser>(model);
+            var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
+                // Send welcome email
+                try
+                {
+                    var subject = "Welcome To TheraGuide";
+                   
+                    var message = $"Hello {user.UserName},\n\nThank you for registering with us!";
 
-                return Ok(new { Message = "User registered successfully",model });
+                    await _emailSender.SendEmailAsync(user.Email, subject, message);
+                }
+                catch (Exception ex)
+                {
+                    // Log the email sending error (you might want to add logging here)
+                    // But don't fail the registration just because email failed
+                    Console.WriteLine($"Failed to send email: {ex.Message}");
+                }
+
+                return Ok(new { Message = "User registered successfully", model });
             }
 
             return BadRequest(result.Errors);
@@ -76,6 +97,10 @@ namespace TheraGuide.Controllers
             {
                 return Unauthorized("Invalid credentials");
             }
+
+            //await _signInManager.SignInAsync(user,true);
+
+
 
             // Generate JWT token
             var key = Encoding.UTF8.GetBytes(_configuration["JWT:Key"]);
@@ -143,7 +168,7 @@ namespace TheraGuide.Controllers
         public async Task<IActionResult> Logout()
         {
           
-            await _signInManager.SignOutAsync();
+            //await _signInManager.SignOutAsync();
 
             
 

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mjORpykEk9k=",
+  "dgSpecHash": "/aSF4nhbcG4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\LAPTOP WORLD\\source\\repos\\TheraGuide\\TheraGuide\\TheraGuide.csproj",
+  "projectFilePath": "D:\\TheraGuide\\TheraGuide.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LAPTOP WORLD\\.nuget\\packages\\automapper\\14.0.0\\automapper.14.0.0.nupkg.sha512",
     "C:\\Users\\LAPTOP WORLD\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",

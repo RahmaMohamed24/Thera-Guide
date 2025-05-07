@@ -17,10 +17,10 @@ namespace TheraGuide.EmailSender
             // Implement your email sending logic here
             // This example uses SMTP (configure in appsettings.json)
 
-            var smtpServer = _configuration["Email:SmtpServer"];
-            var port = int.Parse(_configuration["Email:Port"]);
-            var username = _configuration["Email:Username"];
-            var password = _configuration["Email:Password"];
+            var smtpServer = _configuration["EmailConfiguration:SmtpServer"];
+            var port = int.Parse(_configuration["EmailConfiguration:Port"]);
+            var username = _configuration["EmailConfiguration:Username"];
+            var password = _configuration["EmailConfiguration:Password"];
 
             using (var client = new SmtpClient(smtpServer, port))
             {
@@ -32,7 +32,8 @@ namespace TheraGuide.EmailSender
                     From = new MailAddress(username),
                     Subject = subject,
                     Body = message,
-                    IsBodyHtml = false
+                    IsBodyHtml = true
+
                 };
                 mailMessage.To.Add(email);
 

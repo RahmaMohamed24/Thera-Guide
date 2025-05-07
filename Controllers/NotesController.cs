@@ -23,10 +23,10 @@ namespace TheraGuide.Controllers
             _userManager = userManager;
         }
         // GET: api/notes/my
-        [HttpGet("list")]
-        public async Task<IActionResult> GetMyNotes()
+        [HttpGet("list/{userId}")]
+        public async Task<IActionResult> GetMyNotes(String userId)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var notes = await _notesRepository.FindAsync(n => n.UserId == userId);
             return Ok(notes);
         }
@@ -44,11 +44,11 @@ namespace TheraGuide.Controllers
             }
 
             // Verify user owns the note
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (note.UserId != userId)
-            {
-                return Forbid();
-            }
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //if (note.UserId != userId)
+            //{
+            //    return Forbid();
+            //}
 
             return Ok(note);
         }
@@ -64,8 +64,8 @@ namespace TheraGuide.Controllers
                 return BadRequest(ModelState);
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByIdAsync(userId);
+           // var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+           // var user = await _userManager.FindByIdAsync(userId);
 
             var note = new Notes
             {
@@ -73,38 +73,37 @@ namespace TheraGuide.Controllers
                 Note = model.Content,
                 Date = model.Date ?? DateTime.UtcNow,
                 CreationDate = DateTime.UtcNow,
-                UserId = userId,
-                User = user
+                UserId = model.userId,
                 
             };
 
             var createdNote = await _notesRepository.InsertAsync(note);
             await _notesRepository.SaveAsync();
-            return CreatedAtAction(nameof(GetNote), new { id = createdNote.Id }, createdNote);
+            return Ok(createdNote);
         }
 
         // PUT api/notes/5
         [HttpPost]
         [Route("update")]
-        public async Task<IActionResult> UpdateNote(int id, NoteViewModel model)
+        public async Task<IActionResult> UpdateNote(NoteViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var existingNote = await _notesRepository.GetByIdAsync(id);
+            var existingNote = await _notesRepository.GetByIdAsync(model.Id);
             if (existingNote == null)
             {
                 return NotFound();
             }
 
             // Verify user owns the note
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (existingNote.UserId != userId)
-            {
-                return Forbid();
-            }
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //if (existingNote.UserId != userId)
+            //{
+            //    return Forbid();
+            //}
 
             existingNote.Title = model.Title ?? existingNote.Title;
             existingNote.Note = model.Content ?? existingNote.Note;
@@ -129,14 +128,14 @@ namespace TheraGuide.Controllers
             }
 
             // Verify user owns the note
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (note.UserId != userId)
-            {
-                return Forbid();
-            }
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //if (note.UserId != userId)
+            //{
+            //    return Forbid();
+            //}
 
             await _notesRepository.DeleteAsync(id);
-            return NoContent();
+            return Ok("delete successfully");
         }
     }
 

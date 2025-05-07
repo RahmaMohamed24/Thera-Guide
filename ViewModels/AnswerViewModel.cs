@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using TheraGuide.Entity;
 
-namespace TheraGuide.Entity
+namespace TheraGuide.ViewModels
 {
-    public class Answer
+    public class AnswerViewModel
     {
-        public long Id { get; set; }
         [MaxLength(500)]
         public string Content { get; set; }
         public long QuestionId { get; set; }

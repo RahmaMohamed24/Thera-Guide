@@ -1,12 +1,125 @@
 {
   "Version": 1,
-  "Hash": "u7qS02ZMIFe7lvgNQMSuCTpH/AZhJJcgSysVUvX6Joc=",
+  "Hash": "+s76Hafu4wQ1MhgFbnE9PHTHP8V6ZkiFH8thoOOoyPc=",
   "Source": "TheraGuide",
   "BasePath": "_content/TheraGuide",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "TheraGuide\\wwwroot",
+      "Source": "TheraGuide",
+      "ContentRoot": "D:\\TheraGuide\\wwwroot\\",
+      "BasePath": "_content/TheraGuide",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\TheraGuide\\wwwroot\\images\\TheraGuide.jfif",
+      "SourceId": "TheraGuide",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TheraGuide\\wwwroot\\",
+      "BasePath": "_content/TheraGuide",
+      "RelativePath": "images/TheraGuide#[.{fingerprint}]?.jfif",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "tcsf47zkkn",
+      "Integrity": "s5JHhMtq2WyXR4CH2V7QQPog97W+iTKSDcC/axLaBoM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\TheraGuide.jfif"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "images/TheraGuide.jfif",
+      "AssetFile": "D:\\TheraGuide\\wwwroot\\images\\TheraGuide.jfif",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "20589"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/pjpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"s5JHhMtq2WyXR4CH2V7QQPog97W+iTKSDcC/axLaBoM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 03 May 2025 14:21:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-s5JHhMtq2WyXR4CH2V7QQPog97W+iTKSDcC/axLaBoM="
+        }
+      ]
+    },
+    {
+      "Route": "images/TheraGuide.tcsf47zkkn.jfif",
+      "AssetFile": "D:\\TheraGuide\\wwwroot\\images\\TheraGuide.jfif",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "20589"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/pjpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"s5JHhMtq2WyXR4CH2V7QQPog97W+iTKSDcC/axLaBoM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 03 May 2025 14:21:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "tcsf47zkkn"
+        },
+        {
+          "Name": "label",
+          "Value": "images/TheraGuide.jfif"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-s5JHhMtq2WyXR4CH2V7QQPog97W+iTKSDcC/axLaBoM="
+        }
+      ]
+    }
+  ]
 }

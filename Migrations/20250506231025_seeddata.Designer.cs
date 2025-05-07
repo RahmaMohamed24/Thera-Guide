@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheraGuide.Context;
 
@@ -11,9 +12,11 @@ using TheraGuide.Context;
 namespace TheraGuide.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250506231025_seeddata")]
+    partial class seeddata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3064,166 +3067,6 @@ namespace TheraGuide.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheraGuide.Entity.Tip", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CategoryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Tips");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            CategoryId = 4L,
-                            Content = "Set screen time limits: Create specific limits for how much time you spend on devices daily.",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            CategoryId = 4L,
-                            Content = "Schedule 'device-free' times: Dedicate specific periods in your day to disconnect completely from screens.",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            CategoryId = 4L,
-                            Content = "Turn off non-essential notifications: Reduce interruptions that take your attention away from tasks.",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            CategoryId = 4L,
-                            Content = "Mindful Disconnect: Engage in an activity without screens (e.g., reading, walking).",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            CategoryId = 4L,
-                            Content = "Digital-Free Zones: Create spaces where devices are not allowed.",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            CategoryId = 5L,
-                            Content = "Reach out to someone you trust: Share your feelings with a friend or therapist.",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            CategoryId = 5L,
-                            Content = "Join a social group: Find communities with shared interests to build connections.",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 8L,
-                            CategoryId = 5L,
-                            Content = "Emotional Expression: Write about your feelings in a journal.",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = 9L,
-                            CategoryId = 5L,
-                            Content = "Connect with a Friend: Schedule a call or meetup to talk.",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = 10L,
-                            CategoryId = 6L,
-                            Content = "Set small, achievable goals: Break tasks into smaller steps.",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 11L,
-                            CategoryId = 6L,
-                            Content = "Celebrate small wins: Reward yourself for completing tasks.",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 12L,
-                            CategoryId = 6L,
-                            Content = "Morning Stretch: Start your day with gentle stretches.",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = 13L,
-                            CategoryId = 6L,
-                            Content = "Physical Activity: Walk or do yoga for 15 minutes.",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = 14L,
-                            CategoryId = 3L,
-                            Content = "Limit screen time before bed: Avoid devices 30 minutes before sleep.",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 15L,
-                            CategoryId = 3L,
-                            Content = "Breathing Exercises: Practice deep breathing to calm your mind.",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = 16L,
-                            CategoryId = 2L,
-                            Content = "Practice mindfulness: Meditate to stay present.",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 17L,
-                            CategoryId = 2L,
-                            Content = "Guided Meditation: Listen to a calming meditation.",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = 18L,
-                            CategoryId = 1L,
-                            Content = "Focus on breathing: Use deep breaths to reduce anxiety.",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 19L,
-                            CategoryId = 1L,
-                            Content = "Body Scan: Release tension by focusing on each body part.",
-                            Type = 2
-                        });
-                });
-
             modelBuilder.Entity("TheraGuide.Entity.UserAnswers", b =>
                 {
                     b.Property<long>("Id")
@@ -3325,17 +3168,6 @@ namespace TheraGuide.Migrations
                 {
                     b.HasOne("TheraGuide.Entity.Category", "Category")
                         .WithMany("Questions")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("TheraGuide.Entity.Tip", b =>
-                {
-                    b.HasOne("TheraGuide.Entity.Category", "Category")
-                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
